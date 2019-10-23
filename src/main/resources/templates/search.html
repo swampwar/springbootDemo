@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Search Room</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div>
+	<input type="text" id="keyword" name="keyword" />
+	<button name="searchBtn" onclick="search();">검색</button>
+</div>
+
+<div>
+	<input type="text" id="name" name="name" /> 
+	<input type="text" id="age" name="age" />
+</div>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#keyword").keypress(function (e) {
+        if (e.which == 13) search();
+    });
+});
+
+function search(){
+    var url = '/search';
+    var data = {};
+    data.keyword = $('#keyword').val();
+    console.log(JSON.stringify(data));
+    
+    $.ajax({
+        url: url,
+        contentType: 'application/json',
+        type: 'post',
+        async : true,
+        dataType : 'json',
+        data : JSON.stringify(data),
+        success : function(rslt){
+			$('#name').val(rslt.name);
+			$('#age').val(rslt.age);
+        },
+        error : function(result){
+            alert('검색 실패!');
+        }
+    });		
+}
+</script>
+</html>
